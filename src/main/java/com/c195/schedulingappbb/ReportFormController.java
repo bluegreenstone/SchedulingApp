@@ -1,2 +1,4 @@
-package com.c195.schedulingappbb;public class ReportFormController {
+package com.c195.schedulingappbb;
+
+public class ReportFormController {
 }

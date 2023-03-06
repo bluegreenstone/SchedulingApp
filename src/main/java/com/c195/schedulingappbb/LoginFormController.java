@@ -1,14 +1,32 @@
 package com.c195.schedulingappbb;
 
-import javafx.fxml.FXML;
-import javafx.scene.control.Label;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import com.c195.schedulingappbb.Main;
 
-public class HelloController {
-    @FXML
-    private Label welcomeText;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-    @FXML
-    protected void onHelloButtonClick() {
-        welcomeText.setText("Welcome to JavaFX Application!");
+public class LoginFormController implements Initializable {
+
+    Stage stage;
+
+    public void onLogin(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("MainForm.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+
+        stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
     }
 }

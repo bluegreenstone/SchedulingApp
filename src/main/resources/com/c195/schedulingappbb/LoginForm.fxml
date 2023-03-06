@@ -1,16 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
-
 <?import javafx.scene.control.Button?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.c195.schedulingappbb.HelloController">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-    </padding>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-    <Label fx:id="welcomeText"/>
-    <Button text="Hello!" onAction="#onHelloButtonClick"/>
-</VBox>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="760.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.c195.schedulingappbb.LoginFormController">
+    <children>
+        <Label fx:id="initechConsultingLabel" layoutX="268.0" layoutY="39.0" text="Initech Consulting">
+            <font>
+                <Font name="Arial Bold" size="53.0" />
+            </font>
+        </Label>
+        <Label fx:id="desktopSchedulerLabel" layoutX="403.0" layoutY="109.0" text="Desktop Scheduler">
+            <font>
+                <Font name="Arial Italic" size="24.0" />
+            </font>
+        </Label>
+        <Label layoutX="306.0" layoutY="302.0" text="Username" />
+        <TextField fx:id="usernameTextField" layoutX="411.0" layoutY="297.0" prefHeight="26.0" prefWidth="289.0" />
+        <Label layoutX="307.0" layoutY="354.0" text="Password" />
+        <TextField fx:id="passwordTextField" layoutX="411.0" layoutY="350.0" prefHeight="26.0" prefWidth="289.0" />
+        <RadioButton fx:id="englishRadioButton" layoutX="405.0" layoutY="508.0" mnemonicParsing="false" text="English">
+            <toggleGroup>
+                <ToggleGroup fx:id="languageToggleGroup" />
+            </toggleGroup>
+        </RadioButton>
+        <RadioButton fx:id="frenchRadioButton" layoutX="541.0" layoutY="507.0" mnemonicParsing="false" text="French" toggleGroup="$languageToggleGroup" />
+        <Button fx:id="loginButton" layoutX="656.0" layoutY="411.0" mnemonicParsing="false" onAction="#onLogin" text="login" />
+    </children>
+</AnchorPane>
