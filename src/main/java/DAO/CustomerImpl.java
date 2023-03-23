@@ -58,8 +58,24 @@ public abstract class CustomerImpl {
     }
 
     //TODO: Add delete appointment functionality when Appointments finished
-    public static int delete(int customerId) {
+    public static int customerDelete(int customerId) {
         String sql = "DELETE FROM customers WHERE Customer_ID = ?";
+
+        try {
+            PreparedStatement ps = JDBC.connection.prepareStatement(sql);
+
+            ps.setInt(1, customerId);
+
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected;
+
+        } catch (Exception e) {
+            return -1;
+        }
+    }
+
+    public static int customerAssocApptDelete(int customerId) {
+        String sql = "DELETE FROM appointments WHERE Customer_ID = ?";
 
         try {
             PreparedStatement ps = JDBC.connection.prepareStatement(sql);

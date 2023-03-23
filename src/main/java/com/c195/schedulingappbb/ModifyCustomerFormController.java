@@ -3,6 +3,7 @@ package com.c195.schedulingappbb;
 import DAO.CustomerImpl;
 import DAO.Query;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import model.Customer;
 import javafx.event.ActionEvent;
@@ -32,10 +33,11 @@ public class ModifyCustomerFormController implements Initializable {
     public Label customerDivisionLabel;
     public Label customerPostalCodeLabel;
     public Label warningLabel;
+    public Button cancelButton;
     Stage stage;
 
     public void onCancel(ActionEvent event) throws IOException {
-        loadForm(stage, event, "MainForm.fxml");
+        loadForm(event, "MainForm.fxml");
     }
 
     public void fillCustomerForm(Customer selected) {
@@ -56,6 +58,8 @@ public class ModifyCustomerFormController implements Initializable {
         customerPostalCodeTextField.setText(selected.getPostalCode());
 
     }
+
+    //
 
     public void onSave(ActionEvent event) throws IOException {
         customerValidationReset(customerNameTextField,
@@ -100,14 +104,14 @@ public class ModifyCustomerFormController implements Initializable {
             errorFlag = true;
             warningText = addWarningLabelText(customerCountryLabel, warningText);
         } else {
-            division = customerCountryComboBox.getSelectionModel().getSelectedItem().toString();
+            division = customerCountryComboBox.getSelectionModel().getSelectedItem();
         }
 
         if (comboBoxValidation(customerDivisionComboBox)) {
             errorFlag = true;
             warningText = addWarningLabelText(customerDivisionLabel, warningText);
         } else {
-            division = customerDivisionComboBox.getSelectionModel().getSelectedItem().toString();
+            division = customerDivisionComboBox.getSelectionModel().getSelectedItem();
         }
 
         if (stringValidation(postalCode, customerPostalCodeTextField)) {
@@ -126,7 +130,7 @@ public class ModifyCustomerFormController implements Initializable {
             int divisionId = Query.divisionIdFromNameSelect(division);
             int customerId = Integer.parseInt(customerIdTextField.getText());
             int updateCustomer = CustomerImpl.customerUpdate(customerId, customerName, address, postalCode, phone, divisionId);
-            loadForm(stage, event, "MainForm.fxml");
+            loadForm(event, "MainForm.fxml");
         }
     }
 

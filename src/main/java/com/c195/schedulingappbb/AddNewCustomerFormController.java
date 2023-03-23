@@ -40,15 +40,14 @@ public class AddNewCustomerFormController implements Initializable {
     @FXML
     Button cancelButton;
 
-    private static final String warningHighlight = "-fx-border-color:red;";
-    private static final String defaultHighlight = "";
+    public static final String warningHighlight = "-fx-border-color:red;";
 
     public static ObservableList<String> countryList = FXCollections.observableArrayList();
     public static ObservableList<String> divisionList = FXCollections.observableArrayList();
 
 
     public void onCancel(ActionEvent event) throws IOException {
-        loadForm(stage, event, "MainForm.fxml");
+        loadForm(event, "MainForm.fxml");
     }
 
 
@@ -119,8 +118,8 @@ public class AddNewCustomerFormController implements Initializable {
             return;
         } else {
             int divisionId = Query.divisionIdFromNameSelect(division);
-            int insertCustomer = CustomerImpl.customerInsert(customerName, address, postalCode, phone, divisionId);
-            loadForm(stage, event, "MainForm.fxml");
+            CustomerImpl.customerInsert(customerName, address, postalCode, phone, divisionId);
+            loadForm(event, "MainForm.fxml");
         }
     }
 

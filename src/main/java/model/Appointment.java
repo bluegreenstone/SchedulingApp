@@ -1,5 +1,8 @@
 package model;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.time.LocalDateTime;
 
 public class Appointment {
@@ -8,17 +11,21 @@ public class Appointment {
     private String description;
     private String location;
     private String contact;
+    private String type;
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
     private int customerId;
     private int userId;
 
-    public Appointment(int appointmentId, String title, String description, String location, String contact, LocalDateTime startDateTime, LocalDateTime endDateTime, int customerId, int userId) {
+    public static ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
+
+    public Appointment(int appointmentId, String title, String description, String location, String contact, String type, LocalDateTime startDateTime, LocalDateTime endDateTime, int customerId, int userId) {
         this.appointmentId = appointmentId;
         this.title = title;
         this.description = description;
         this.location = location;
         this.contact = contact;
+        this.type = type;
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
         this.customerId = customerId;
@@ -44,13 +51,22 @@ public class Appointment {
     public String getContact() {
         return contact;
     }
+    public String getType() {
+        return type;
+    }
 
     public LocalDateTime getStartDateTime() {
         return startDateTime;
     }
+    public String getStartDateTimeFormatted() {
+        return startDateTime.toLocalDate().toString() + " " + startDateTime.toLocalTime().toString();
+    }
 
     public LocalDateTime getEndDateTime() {
         return endDateTime;
+    }
+    public String getEndDateTimeFormatted() {
+        return endDateTime.toLocalDate().toString() + " " + endDateTime.toLocalTime().toString();
     }
 
     public int getCustomerId() {
@@ -59,6 +75,10 @@ public class Appointment {
 
     public int getUserId() {
         return userId;
+    }
+
+    public static ObservableList<Appointment> getAllAppointments() {
+        return allAppointments;
     }
 
     public void setAppointmentId(int appointmentId) {
@@ -79,6 +99,10 @@ public class Appointment {
 
     public void setContact(String contact) {
         this.contact = contact;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public void setStartDateTime(LocalDateTime startDateTime) {

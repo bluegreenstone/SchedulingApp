@@ -31,5 +31,9 @@
         </RadioButton>
         <RadioButton fx:id="frenchRadioButton" layoutX="541.0" layoutY="507.0" mnemonicParsing="false" text="French" toggleGroup="$languageToggleGroup" />
         <Button fx:id="loginButton" layoutX="656.0" layoutY="411.0" mnemonicParsing="false" onAction="#onLogin" text="login" />
+      <Label fx:id="locationLabel" alignment="CENTER" layoutX="360.0" layoutY="690.0" prefHeight="17.0" prefWidth="289.0">
+         <font>
+            <Font name="Arial Bold" size="13.0" />
+         </font></Label>
     </children>
 </AnchorPane>

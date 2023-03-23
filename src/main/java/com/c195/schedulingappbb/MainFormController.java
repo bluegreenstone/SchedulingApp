@@ -1,16 +1,15 @@
 package com.c195.schedulingappbb;
 
+import DAO.AppointmentImpl;
 import DAO.CustomerImpl;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Appointment;
@@ -18,41 +17,46 @@ import model.Customer;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.TextStyle;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class MainFormController implements Initializable {
-    public TableView<Customer> customerTableView;
-    public TableView<Appointment> appointmentTableView;
     static Stage stage;
-    public TableColumn customerRecCustomerIdCol;
-    public TableColumn customerRecNameCol;
-    public TableColumn customerRecAddressCol;
-    public TableColumn customerRecPhoneCol;
-    public TableColumn customerRecCountryCol;
-    public TableColumn customerRecDivisionCol;
-    public TableColumn customerRecPostalCodeCol;
-    public TableColumn upcomingApptAppointmentIdCol;
-    public TableColumn upcomingApptTitleCol;
-    public TableColumn upcomingApptDescriptionCol;
-    public TableColumn upcomingApptLocationCol;
-    public TableColumn upcomingApptContactCol;
-    public TableColumn upcomingApptTypeCol;
-    public TableColumn upcomingApptStartCol;
-    public TableColumn upcomingApptEndCol;
-    public TableColumn upcomingApptCustomerIdCol;
-    public TableColumn upcomingApptUserIdCol;
-    public TableView<Appointment> UpcomingApptTable;
+    public TableColumn<Customer, Integer> customerRecCustomerIdCol;
+    public TableColumn<Customer, String> customerRecNameCol;
+    public TableColumn<Customer, String> customerRecAddressCol;
+    public TableColumn<Customer, String> customerRecPhoneCol;
+    public TableColumn<Customer, String> customerRecCountryCol;
+    public TableColumn<Customer, String> customerRecDivisionCol;
+    public TableColumn<Customer, String> customerRecPostalCodeCol;
+    public TableColumn<Appointment, Integer> upcomingApptAppointmentIdCol;
+    public TableColumn<Appointment, String> upcomingApptTitleCol;
+    public TableColumn<Appointment, String> upcomingApptDescriptionCol;
+    public TableColumn<Appointment, String> upcomingApptLocationCol;
+    public TableColumn<Appointment, String> upcomingApptContactCol;
+    public TableColumn<Appointment, String> upcomingApptTypeCol;
+    //TODO: Figure out TableColumn type after figuring out time
+    public TableColumn<Appointment, String> upcomingApptStartCol;
+    public TableColumn<Appointment, String> upcomingApptEndCol;
+    public TableColumn<Appointment, Integer> upcomingApptCustomerIdCol;
+    public TableColumn<Appointment, Integer> upcomingApptUserIdCol;
+    public TableView<Appointment> upcomingApptTable;
     public TableView<Customer> customerRecTable;
+    public RadioButton viewAllRadioButton;
+    public RadioButton monthRadioButton;
+    public RadioButton weekRadioButton;
 
     public void onLogout(ActionEvent event) throws IOException {
-        loadForm(stage, event, "LoginForm.fxml");
+        loadForm(event, "LoginForm.fxml");
     }
 
     public void onAddNewCustomer(ActionEvent event) throws IOException {
-        loadForm(stage, event, "AddNewCustomerForm.fxml");
+        loadForm(event, "AddNewCustomerForm.fxml");
     }
 
-    //TODO: Add appointment deleting when finishing appointments
+
     public void onDeleteCustomer(ActionEvent event) throws IOException {
         Customer selected = customerRecTable.getSelectionModel().getSelectedItem();
 
@@ -62,10 +66,12 @@ public class MainFormController implements Initializable {
             String content = "Deleting this customer will also delete all associated appointments.";
             if (confirmationAlert(title, header, content)) {
                 int customerId = selected.getCustomerId();
-                int deleted = CustomerImpl.delete(customerId);
+                CustomerImpl.customerDelete(customerId);
+                CustomerImpl.customerAssocApptDelete(customerId);
+                Appointment.allAppointments.remove(selected);
+                Customer.allCustomers.remove(selected);
+                loadForm(event, "MainForm.fxml");
 
-                int listIndex = Customer.allCustomers.indexOf(selected);
-                Customer.allCustomers.remove(listIndex);
             }
         }
     }
@@ -87,23 +93,58 @@ public class MainFormController implements Initializable {
     }
 
     public void onAddNewAppointment(ActionEvent event) throws IOException {
-        loadForm(stage, event, "AddNewAppointmentForm.fxml");
+        loadForm(event, "AddNewAppointmentForm.fxml");
     }
 
     public void onModifyAppointment(ActionEvent event) throws IOException {
-        loadForm(stage, event, "ModifyAppointmentForm.fxml");
+        Appointment selected = upcomingApptTable.getSelectionModel().getSelectedItem();
+
+        if (selected != null) {
+            FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("ModifyAppointmentForm.fxml"));
+            Scene scene = new Scene(fxmlLoader.load());
+
+            ModifyAppointmentFormController modifyAppointmentFormController = fxmlLoader.getController();
+            modifyAppointmentFormController.fillApptForm(selected);
+
+            stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        }
     }
 
-    public static void loadForm(Stage stage, ActionEvent event, String form) throws IOException {
+    public void onDeleteAppointment() {
+        Appointment selected = upcomingApptTable.getSelectionModel().getSelectedItem();
+
+        if (selected != null) {
+            String title = "Delete Appointment";
+            String header = "Are you sure you want to delete this appointment?";
+            String content = "Please select OK to delete appointment.";
+            if (confirmationAlert(title, header, content)) {
+                int apptId = selected.getAppointmentId();
+                AppointmentImpl.appointmentDelete(apptId);
+                Appointment.allAppointments.remove(selected);
+            }
+        }
+    }
+
+    public static void loadForm(ActionEvent event, String form) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource(form));
         Scene scene = new Scene(fxmlLoader.load());
 
-        stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(scene);
         stage.show();
     }
 
-    public static void setCustomerTable(TableColumn id, TableColumn name, TableColumn address, TableColumn phone, TableColumn country,  TableColumn division, TableColumn postalCode, TableView table, ObservableList list) {
+    public static void setCustomerTable(TableColumn<Customer, Integer> id,
+                                        TableColumn<Customer, String> name,
+                                        TableColumn<Customer, String> address,
+                                        TableColumn<Customer, String> phone,
+                                        TableColumn<Customer, String> country,
+                                        TableColumn<Customer, String> division,
+                                        TableColumn<Customer, String> postalCode,
+                                        TableView<Customer> table,
+                                        ObservableList<Customer> list) {
         id.setCellValueFactory(new PropertyValueFactory<>("CustomerId"));
         name.setCellValueFactory(new PropertyValueFactory<>("Name"));
         address.setCellValueFactory(new PropertyValueFactory<>("Address"));
@@ -114,16 +155,115 @@ public class MainFormController implements Initializable {
         table.setItems(list);
     }
 
+    public static void setAppointmentTable(TableColumn<Appointment, Integer> apptId,
+                                           TableColumn<Appointment, String> apptTitle,
+                                           TableColumn<Appointment, String> apptDescription,
+                                           TableColumn<Appointment, String> apptLocation,
+                                           TableColumn<Appointment, String> apptContact,
+                                           TableColumn<Appointment, String> apptType,
+                                           TableColumn<Appointment, String> apptStart,
+                                           TableColumn<Appointment, String> apptEnd,
+                                           TableColumn<Appointment, Integer> apptCustomerId,
+                                           TableColumn<Appointment, Integer> apptUserId,
+                                           TableView<Appointment> table,
+                                           ObservableList<Appointment> list) {
+        apptId.setCellValueFactory(new PropertyValueFactory<>("AppointmentId"));
+        apptTitle.setCellValueFactory(new PropertyValueFactory<>("Title"));
+        apptDescription.setCellValueFactory(new PropertyValueFactory<>("Description"));
+        apptLocation.setCellValueFactory(new PropertyValueFactory<>("Location"));
+        apptContact.setCellValueFactory(new PropertyValueFactory<>("Contact"));
+        apptType.setCellValueFactory(new PropertyValueFactory<>("Type"));
+        apptStart.setCellValueFactory(new PropertyValueFactory<>("StartDateTimeFormatted"));
+        apptEnd.setCellValueFactory(new PropertyValueFactory<>("EndDateTimeFormatted"));
+        apptCustomerId.setCellValueFactory(new PropertyValueFactory<>("CustomerId"));
+        apptUserId.setCellValueFactory(new PropertyValueFactory<>("UserId"));
+        table.setItems(list);
+    }
+
+
     public static boolean confirmationAlert(String title, String header, String content) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle(title);
         alert.setHeaderText(header);
         alert.setContentText(content);
 
-        if (alert.showAndWait().get() == ButtonType.OK) {
-            return true;
-        } else {
-            return false;
+        return alert.showAndWait().get() == ButtonType.OK;
+    }
+
+
+    public static void warningAlert(String title, String header, String content) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
+    public static void appointmentAlert(ObservableList<Appointment> list) {
+        LocalDateTime now = LocalDateTime.now();
+        boolean flag = false;
+        for (Appointment a : list) {
+            if (a.getStartDateTime().isAfter(now) && a.getStartDateTime().isBefore(now.plusMinutes(15))) {
+                flag = true;
+                warningAlert("Appointment Alert",
+                        "Appointment within 15 minutes",
+                        "Appointment ID: " + a.getAppointmentId() +
+                                "\nDate: " + a.getStartDateTime().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ", " + a.getStartDateTime().getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()) + " " + a.getStartDateTime().getDayOfMonth() +
+                                "\nTime: " + a.getStartDateTime().getHour() + ":" + a.getStartDateTime().getMinute() + " to " + a.getEndDateTime().getHour() + ":" + a.getEndDateTime().getMinute());
+            }
+        }
+        if (!flag) {
+            warningAlert("Appointment Alert",
+                    "No appointments within 15 minutes",
+                    "There are no upcoming appointments");
+        }
+    }
+
+    public void onViewAllRadioButton() {
+        if (viewAllRadioButton.isSelected()) {
+            Appointment.allAppointments.clear();
+            AppointmentImpl.appointmentSelect();
+            ObservableList<Appointment> list = Appointment.getAllAppointments();
+            setAppointmentTable(upcomingApptAppointmentIdCol, upcomingApptTitleCol, upcomingApptDescriptionCol,
+                    upcomingApptLocationCol, upcomingApptContactCol, upcomingApptTypeCol, upcomingApptStartCol,
+                    upcomingApptEndCol, upcomingApptCustomerIdCol, upcomingApptUserIdCol, upcomingApptTable,
+                    list);
+        }
+    }
+
+    public void onMonthRadioButton() {
+        if (monthRadioButton.isSelected()) {
+            Appointment.allAppointments.clear();
+            AppointmentImpl.appointmentSelect();
+            ObservableList<Appointment> list = Appointment.getAllAppointments();
+            ObservableList<Appointment> filteredList = FXCollections.observableArrayList();
+            for (Appointment a : list) {
+                if (a.getStartDateTime().getMonth() == LocalDateTime.now().getMonth()) {
+                    filteredList.add(a);
+                }
+            }
+            setAppointmentTable(upcomingApptAppointmentIdCol, upcomingApptTitleCol, upcomingApptDescriptionCol,
+                    upcomingApptLocationCol, upcomingApptContactCol, upcomingApptTypeCol, upcomingApptStartCol,
+                    upcomingApptEndCol, upcomingApptCustomerIdCol, upcomingApptUserIdCol, upcomingApptTable,
+                    filteredList);
+        }
+    }
+
+    public void onWeekRadioButton() {
+        if (weekRadioButton.isSelected()) {
+            Appointment.allAppointments.clear();
+            AppointmentImpl.appointmentSelect();
+            ObservableList<Appointment> list = Appointment.getAllAppointments();
+            ObservableList<Appointment> filteredList = FXCollections.observableArrayList();
+            for (Appointment a : list) {
+                if (a.getStartDateTime().getMonth() == LocalDateTime.now().getMonth() && a.getStartDateTime().getDayOfMonth() >= LocalDateTime.now().getDayOfMonth() && a.getStartDateTime().getDayOfMonth() <= LocalDateTime.now().getDayOfMonth() + 7) {
+                    filteredList.add(a);
+                }
+            }
+            setAppointmentTable(upcomingApptAppointmentIdCol, upcomingApptTitleCol, upcomingApptDescriptionCol,
+                    upcomingApptLocationCol, upcomingApptContactCol, upcomingApptTypeCol, upcomingApptStartCol,
+                    upcomingApptEndCol, upcomingApptCustomerIdCol, upcomingApptUserIdCol, upcomingApptTable,
+                    filteredList);
         }
     }
 
@@ -131,6 +271,15 @@ public class MainFormController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Customer.allCustomers.clear();
         CustomerImpl.customerSelect();
-        setCustomerTable(customerRecCustomerIdCol, customerRecNameCol, customerRecAddressCol, customerRecPhoneCol, customerRecCountryCol, customerRecDivisionCol, customerRecPostalCodeCol, customerRecTable, Customer.getAllCustomers());
+        setCustomerTable(customerRecCustomerIdCol, customerRecNameCol, customerRecAddressCol, customerRecPhoneCol,
+                customerRecCountryCol, customerRecDivisionCol, customerRecPostalCodeCol, customerRecTable,
+                Customer.getAllCustomers());
+
+        Appointment.allAppointments.clear();
+        AppointmentImpl.appointmentSelect();
+        setAppointmentTable(upcomingApptAppointmentIdCol, upcomingApptTitleCol, upcomingApptDescriptionCol,
+                upcomingApptLocationCol, upcomingApptContactCol, upcomingApptTypeCol, upcomingApptStartCol,
+                upcomingApptEndCol, upcomingApptCustomerIdCol, upcomingApptUserIdCol, upcomingApptTable,
+                Appointment.getAllAppointments());
     }
 }
