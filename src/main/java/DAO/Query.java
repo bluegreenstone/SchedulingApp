@@ -8,6 +8,9 @@ import java.sql.ResultSet;
 
 public abstract class Query {
 
+    /**
+     * This method is used to select all countries from the database.
+     */
     public static void countrySelect() {
         String sql = "SELECT c.Country\n" +
                 "FROM countries AS c";
@@ -24,6 +27,10 @@ public abstract class Query {
         }
     }
 
+    /**
+     * This method is used to select all divisions from the database.
+     * @param country
+     */
     public static void divisionSelect(String country) {
         String sql = "SELECT d.Division_ID, d.Division, c.Country\n" +
                 "FROM first_level_divisions AS d\n" +
@@ -44,6 +51,9 @@ public abstract class Query {
         }
     }
 
+    /**
+     * This method is used to select all contacts from the database.
+     */
     public static void contactSelect() {
         String sql = "SELECT c.Contact_Name\n" +
                 "FROM contacts AS c";
@@ -61,6 +71,9 @@ public abstract class Query {
         }
     }
 
+    /**
+     * This method is used to select all customers from the database.
+     */
     public static void customerSelect() {
         String sql = "SELECT c.Customer_Name\n" +
                 "FROM customers AS c";
@@ -78,6 +91,11 @@ public abstract class Query {
         }
     }
 
+    /**
+     * This method is used to select division IDs from its name.
+     * @param division
+     * @return
+     */
     public static int divisionIdFromNameSelect(String division) {
         String sql = "SELECT d.Division_ID, d.Division\n" +
                 "FROM first_level_divisions AS d\n" +
@@ -99,6 +117,11 @@ public abstract class Query {
         return divisionId;
     }
 
+    /**
+     * This method is used to select customer IDs from its name.
+     * @param customerName
+     * @return
+     */
     public static int customerIdFromNameSelect(String customerName) {
         String sql = "SELECT c.Customer_ID\n" +
                 "FROM customers AS c\n" +
@@ -118,6 +141,11 @@ public abstract class Query {
         return customerId;
     }
 
+    /**
+     * This method is used to select customer names from its ID.
+     * @param customerId
+     * @return
+     */
     public static String customerNameFromIdSelect(int customerId) {
         String sql = "SELECT c.Customer_Name\n" +
                 "FROM customers AS c\n" +
@@ -137,6 +165,11 @@ public abstract class Query {
         return customerName;
     }
 
+    /**
+     * This method is used to select contact IDs from its name.
+     * @param contactName
+     * @return
+     */
     public static int contactIdFromNameSelect(String contactName) {
         String sql = "SELECT c.Contact_ID\n" +
                 "FROM contacts AS c\n" +

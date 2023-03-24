@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"m":"com.c195.schedulingappbb","l":"com.c195.schedulingappbb"},{"m":"com.c195.schedulingappbb","l":"DAO"},{"m":"com.c195.schedulingappbb","l":"model"}];updateSearchResults();

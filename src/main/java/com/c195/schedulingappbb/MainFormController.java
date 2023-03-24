@@ -52,15 +52,31 @@ public class MainFormController implements Initializable {
     public RadioButton customersMonthTypeRadioButton;
     public Button generateButton;
 
+    /**
+     * This method loads the LoginForm.fxml file
+     * @param event
+     * @throws IOException
+     */
     public void onLogout(ActionEvent event) throws IOException {
+        LoginFormController.userList.clear();
         loadForm(event, "LoginForm.fxml");
     }
 
+    /**
+     * This method loads the AddNewCustomerForm.fxml file
+     * @param event
+     * @throws IOException
+     */
     public void onAddNewCustomer(ActionEvent event) throws IOException {
         loadForm(event, "AddNewCustomerForm.fxml");
     }
 
 
+    /**
+     * This method asks for confirmation before deleting a customer from the database and removing associated appointments.
+     * @param event
+     * @throws IOException
+     */
     public void onDeleteCustomer(ActionEvent event) throws IOException {
         Customer selected = customerRecTable.getSelectionModel().getSelectedItem();
 
@@ -80,6 +96,11 @@ public class MainFormController implements Initializable {
         }
     }
 
+    /**
+     * This method loads the ModifyCustomerForm.fxml file
+     * @param event
+     * @throws IOException
+     */
     public void onModifyCustomer(ActionEvent event) throws IOException {
         Customer selected = customerRecTable.getSelectionModel().getSelectedItem();
 
@@ -96,10 +117,20 @@ public class MainFormController implements Initializable {
         }
     }
 
+    /**
+     * This method loads the AddNewAppointmentForm.fxml file
+     * @param event
+     * @throws IOException
+     */
     public void onAddNewAppointment(ActionEvent event) throws IOException {
         loadForm(event, "AddNewAppointmentForm.fxml");
     }
 
+    /**
+     * This method loads the ModifyAppointmentForm.fxml file when an item is selected.
+     * @param event
+     * @throws IOException
+     */
     public void onModifyAppointment(ActionEvent event) throws IOException {
         Appointment selected = upcomingApptTable.getSelectionModel().getSelectedItem();
 
@@ -116,6 +147,9 @@ public class MainFormController implements Initializable {
         }
     }
 
+    /**
+     * This method asks for confirmation before deleting an appointment from the database.
+     */
     public void onDeleteAppointment() {
         Appointment selected = upcomingApptTable.getSelectionModel().getSelectedItem();
 
@@ -131,6 +165,12 @@ public class MainFormController implements Initializable {
         }
     }
 
+    /**
+     * This is a general method for loading forms.
+     * @param event
+     * @param form
+     * @throws IOException
+     */
     public static void loadForm(ActionEvent event, String form) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource(form));
         Scene scene = new Scene(fxmlLoader.load());
@@ -140,6 +180,18 @@ public class MainFormController implements Initializable {
         stage.show();
     }
 
+    /**
+     * This method sets the customer table.
+     * @param id
+     * @param name
+     * @param address
+     * @param phone
+     * @param country
+     * @param division
+     * @param postalCode
+     * @param table
+     * @param list
+     */
     public static void setCustomerTable(TableColumn<Customer, Integer> id,
                                         TableColumn<Customer, String> name,
                                         TableColumn<Customer, String> address,
@@ -159,6 +211,21 @@ public class MainFormController implements Initializable {
         table.setItems(list);
     }
 
+    /**
+     * This method sets the appointment table.
+     * @param apptId
+     * @param apptTitle
+     * @param apptDescription
+     * @param apptLocation
+     * @param apptContact
+     * @param apptType
+     * @param apptStart
+     * @param apptEnd
+     * @param apptCustomerId
+     * @param apptUserId
+     * @param table
+     * @param list
+     */
     public static void setAppointmentTable(TableColumn<Appointment, Integer> apptId,
                                            TableColumn<Appointment, String> apptTitle,
                                            TableColumn<Appointment, String> apptDescription,
@@ -185,6 +252,13 @@ public class MainFormController implements Initializable {
     }
 
 
+    /**
+     * This method is a general method to create a confirmation alert.
+     * @param title
+     * @param header
+     * @param content
+     * @return
+     */
     public static boolean confirmationAlert(String title, String header, String content) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle(title);
@@ -195,6 +269,12 @@ public class MainFormController implements Initializable {
     }
 
 
+    /**
+     * This method is a general method to create a warning alert.
+     * @param title
+     * @param header
+     * @param content
+     */
     public static void warningAlert(String title, String header, String content) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle(title);
@@ -203,6 +283,10 @@ public class MainFormController implements Initializable {
         alert.showAndWait();
     }
 
+    /**
+     * This method notifies the user if an appointment is within 15 minutes or there are no upcoming appointments.
+     * @param list
+     */
     public static void appointmentAlert(ObservableList<Appointment> list) {
         LocalDateTime now = LocalDateTime.now();
         boolean flag = false;
@@ -223,6 +307,9 @@ public class MainFormController implements Initializable {
         }
     }
 
+    /**
+     * This method shows all appointments in the table.
+     */
     public void onViewAllRadioButton() {
         if (viewAllRadioButton.isSelected()) {
             Appointment.allAppointments.clear();
@@ -235,6 +322,9 @@ public class MainFormController implements Initializable {
         }
     }
 
+    /**
+     * This method shows appointments within the month in the table.
+     */
     public void onMonthRadioButton() {
         if (monthRadioButton.isSelected()) {
             Appointment.allAppointments.clear();
@@ -253,6 +343,9 @@ public class MainFormController implements Initializable {
         }
     }
 
+    /**
+     * This method shows appointments within the week in the table.
+     */
     public void onWeekRadioButton() {
         if (weekRadioButton.isSelected()) {
             Appointment.allAppointments.clear();
@@ -271,6 +364,11 @@ public class MainFormController implements Initializable {
         }
     }
 
+    /**
+     * This method controls the radio buttons for the reports.
+     * @param event
+     * @throws IOException
+     */
     public void onGenerate(ActionEvent event) throws IOException {
         if (customersMonthTypeRadioButton.isSelected()) {
             onCustomersMonthTypeRadioButton();
@@ -281,6 +379,9 @@ public class MainFormController implements Initializable {
         }
     }
 
+    /**
+     * This method creates an alert showing the number of appointments by month and type.
+     */
     public void onCustomersMonthTypeRadioButton() {
         Appointment.allAppointments.clear();
         AppointmentImpl.appointmentSelect();
@@ -329,10 +430,18 @@ public class MainFormController implements Initializable {
     }
 
 
+    /**
+     * This method loads the report form.
+     * @param event
+     * @throws IOException
+     */
     public void onAllContactsRadioButton(ActionEvent event) throws IOException {
         loadForm(event, "ReportForm.fxml");
     }
 
+    /**
+     * This method creates an alert showing the number of customers by country.
+     */
     public void onCustomersCountryRadioButton() {
         Customer.allCustomers.clear();
         CustomerImpl.customerSelect();

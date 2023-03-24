@@ -7,7 +7,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.Appointment;
-import model.Customer;
 
 import java.io.IOException;
 import java.net.URL;
@@ -50,10 +49,19 @@ public class ModifyAppointmentFormController implements Initializable {
     public TextField apptIdTextField;
     Stage stage;
 
+    /**
+     * This method loads the main form.
+     * @param event
+     * @throws IOException
+     */
     public void onCancel(ActionEvent event) throws IOException {
         loadForm(event, "MainForm.fxml");
     }
 
+    /**
+     * This method prefills the form with the selected appointment's data.
+     * @param selected
+     */
     public void fillApptForm(Appointment selected) {
 
         apptIdTextField.setText(Integer.toString(selected.getAppointmentId()));
@@ -79,6 +87,11 @@ public class ModifyAppointmentFormController implements Initializable {
 
     }
 
+    /**
+     * This method validates the form data and saves the appointment to the database.
+     * @param event
+     * @throws IOException
+     */
     public void onSave(ActionEvent event) throws IOException {
         apptValidationReset(apptTitleTextField,
                 apptDescriptionTextField,
@@ -251,7 +264,6 @@ public class ModifyAppointmentFormController implements Initializable {
             Timestamp endTimestamp = convertToTimestamp(date, convertToLocalTime(end));
             int customerId = customerIdFromNameSelect(customer);
             int contactId = contactIdFromNameSelect(contact);
-            //TODO: Get rid of hard-coded user id after doing login stuff
             int userId = LoginFormController.userList.get(0).getUserId();
 
             AppointmentImpl.appointmentUpdate(title, description, location, type, startTimestamp, endTimestamp,

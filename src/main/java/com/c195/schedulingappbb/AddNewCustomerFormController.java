@@ -45,12 +45,21 @@ public class AddNewCustomerFormController implements Initializable {
     public static ObservableList<String> countryList = FXCollections.observableArrayList();
     public static ObservableList<String> divisionList = FXCollections.observableArrayList();
 
-
+    /**
+     * This method loads the main form on cancel.
+     * @param event
+     * @throws IOException
+     */
     public void onCancel(ActionEvent event) throws IOException {
         loadForm(event, "MainForm.fxml");
     }
 
 
+    /**
+     * This method is used to validate the user input and save the new customer to the database.
+     * @param event
+     * @throws IOException
+     */
     public void onSave(ActionEvent event) throws IOException {
         customerValidationReset(addCustomerNameTextfield,
                 addCustomerAddressTextField,
@@ -123,6 +132,12 @@ public class AddNewCustomerFormController implements Initializable {
         }
     }
 
+    /**
+     * This method validates string input is not blank.
+     * @param s
+     * @param textField
+     * @return
+     */
     public static boolean stringValidation(String s, TextField textField) {
         if (s.isBlank()) {
             textField.setStyle(warningHighlight);
@@ -132,6 +147,11 @@ public class AddNewCustomerFormController implements Initializable {
         }
     }
 
+    /**
+     * This method validates that a combobox has a selection.
+     * @param comboBox
+     * @return
+     */
     public static boolean comboBoxValidation(ComboBox<String> comboBox) {
         if (comboBox.getSelectionModel().getSelectedItem() == null) {
             comboBox.setStyle(warningHighlight);
@@ -141,11 +161,26 @@ public class AddNewCustomerFormController implements Initializable {
         }
     }
 
+    /**
+     * This method adds a warning label to the warning text.
+     * @param textFieldLabel
+     * @param s
+     * @return
+     */
     public static String addWarningLabelText(Label textFieldLabel, String s) {
         s = s.concat(textFieldLabel.getText() + " cannot be empty!\n");
         return s;
     }
 
+    /**
+     * This method resets the validation highlights.
+     * @param addCustomerNameTextfield
+     * @param addCustomerAddressTextField
+     * @param addCustomerPhone
+     * @param addCustomerCountry
+     * @param addCustomerDivision
+     * @param addCustomerPostalCode
+     */
     public static void customerValidationReset(TextField addCustomerNameTextfield,
                                                TextField addCustomerAddressTextField,
                                                TextField addCustomerPhone,
@@ -161,6 +196,10 @@ public class AddNewCustomerFormController implements Initializable {
 
     }
 
+    /**
+     * This method enables the division combobox when a country is selected.
+     * @param event
+     */
     public void onSelectCountry(ActionEvent event) {
         if (addCustomerCountry.getSelectionModel().getSelectedItem() != null) {
             addCustomerDivision.setDisable(false);
@@ -169,12 +208,23 @@ public class AddNewCustomerFormController implements Initializable {
 
     }
 
+    /**
+     * This method sets the country combobox.
+     * @param comboBox
+     * @param list
+     */
     public static void setCountryComboBox(ComboBox<String> comboBox, ObservableList<String> list) {
         list.clear();
         Query.countrySelect();
         comboBox.setItems(list);
     }
 
+    /**
+     * This method sets the division combobox.
+     * @param divisionComboBox
+     * @param list
+     * @param countryComboBox
+     */
     public static void setDivisionComboBox(ComboBox<String> divisionComboBox,
                                            ObservableList<String> list,
                                            ComboBox<String> countryComboBox) {

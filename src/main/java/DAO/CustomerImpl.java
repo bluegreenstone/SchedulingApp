@@ -7,6 +7,15 @@ import java.sql.ResultSet;
 
 public abstract class CustomerImpl {
 
+    /**
+     * This method inserts a customer into the database.
+     * @param customerName
+     * @param address
+     * @param postalCode
+     * @param phoneNumber
+     * @param divisionId
+     * @return
+     */
     public static int customerInsert(String customerName,
                                      String address,
                                      String postalCode,
@@ -31,6 +40,16 @@ public abstract class CustomerImpl {
         }
     }
 
+    /**
+     * This method updates a customer in the database.
+     * @param customerId
+     * @param customerName
+     * @param address
+     * @param postalCode
+     * @param phoneNumber
+     * @param divisionId
+     * @return
+     */
     public static int customerUpdate(int customerId,
                                      String customerName,
                                      String address,
@@ -57,7 +76,11 @@ public abstract class CustomerImpl {
         }
     }
 
-
+    /**
+     * This method deletes a customer from the database.
+     * @param customerId
+     * @return
+     */
     public static int customerDelete(int customerId) {
         String sql = "DELETE FROM customers WHERE Customer_ID = ?";
 
@@ -74,6 +97,11 @@ public abstract class CustomerImpl {
         }
     }
 
+    /**
+     * This method deletes all appointments associated with a customer.
+     * @param customerId
+     * @return
+     */
     public static int customerAssocApptDelete(int customerId) {
         String sql = "DELETE FROM appointments WHERE Customer_ID = ?";
 
@@ -91,6 +119,9 @@ public abstract class CustomerImpl {
     }
 
 
+    /**
+     * This method selects all customers from the database.
+     */
     public static void customerSelect() {
         String sql = "SELECT c.Customer_ID, c.Customer_Name, c.Address, c.Postal_Code, c.Phone, f.Division, c2.Country\n" +
                 "FROM customers AS c \n" +

@@ -32,11 +32,20 @@ public class ReportFormController implements Initializable {
     public TableColumn<Appointment, Integer> upcomingApptCustomerIdCol;
     public Button returnButton;
 
-
+    /**
+     * This method loads the Main Form
+     * @param event
+     * @throws IOException
+     */
     public void onReturnButton(ActionEvent event) throws IOException {
         loadForm(event, "MainForm.fxml");
     }
 
+    /**
+     * This method populates the Contact ComboBox with the names of all contacts in the database and then sets the table for the contact.
+     * @param event
+     * @throws IOException
+     */
     public void onContactComboBox(ActionEvent event) throws IOException {
         if (contactComboBox.getValue() != null) {
             int contactId = Query.contactIdFromNameSelect(contactComboBox.getValue());
@@ -56,6 +65,19 @@ public class ReportFormController implements Initializable {
         }
     }
 
+    /**
+     * This method sets the table of appointments for the contact.
+     * @param apptId
+     * @param apptTitle
+     * @param apptDescription
+     * @param apptLocation
+     * @param apptType
+     * @param apptStart
+     * @param apptEnd
+     * @param apptCustomerId
+     * @param list
+     * @param table
+     */
     public void setContactTable(TableColumn<Appointment, Integer> apptId,
                                 TableColumn<Appointment, String> apptTitle,
                                 TableColumn<Appointment, String> apptDescription,

@@ -14,6 +14,15 @@ JavaFX VERSION: 11
 
 DIRECTIONS TO RUN:
 
-ADDITIONAL REPORT: My additional
+ADDITIONAL REPORT: My additional report lists all countries that have at least one customer in the database. It also
+                   lists the number of customers in each country.
+
+LAMBDA EXPRESSIONS:
+
+    1. Lambda expression used to MainFormController.java line 394 to iterate through appointments list and make a new
+    list of types.
+
+    2. Lambda expression used to MainFormController.java line 453 to iterate through customers list and make a new
+    list of countries from all customers.
 
 MySQL CONNECTOR DRIVER VERSION: 8.0.32

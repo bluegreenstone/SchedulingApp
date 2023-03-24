@@ -20,6 +20,19 @@ public class Appointment {
     public static ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
     public static ObservableList<Appointment> contactAppointments = FXCollections.observableArrayList();
 
+    /**
+     * This is the constructor.
+     * @param appointmentId
+     * @param title
+     * @param description
+     * @param location
+     * @param contact
+     * @param type
+     * @param startDateTime
+     * @param endDateTime
+     * @param customerId
+     * @param userId
+     */
     public Appointment(int appointmentId, String title, String description, String location, String contact, String type, LocalDateTime startDateTime, LocalDateTime endDateTime, int customerId, int userId) {
         this.appointmentId = appointmentId;
         this.title = title;

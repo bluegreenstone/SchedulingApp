@@ -9,6 +9,12 @@ import static com.c195.schedulingappbb.LoginFormController.userList;
 
 public abstract class UserImpl {
 
+    /**
+     * Validates user login credentials against database
+     * @param userName
+     * @param password
+     * @return
+     */
     public static Boolean validateUser(String userName, String password) {
         try {
             String sql = "SELECT * FROM users WHERE User_Name = ? AND Password = ?";

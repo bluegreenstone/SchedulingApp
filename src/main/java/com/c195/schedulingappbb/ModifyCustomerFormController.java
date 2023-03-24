@@ -36,10 +36,19 @@ public class ModifyCustomerFormController implements Initializable {
     public Button cancelButton;
     Stage stage;
 
+    /**
+     * This method loads the Main Form when the Cancel button is clicked.
+     * @param event
+     * @throws IOException
+     */
     public void onCancel(ActionEvent event) throws IOException {
         loadForm(event, "MainForm.fxml");
     }
 
+    /**
+     * This method fills in the TextFields from the selected Customer on MainForm
+     * @param selected
+     */
     public void fillCustomerForm(Customer selected) {
 
         customerIdTextField.setText(Integer.toString(selected.getCustomerId()));
@@ -61,6 +70,11 @@ public class ModifyCustomerFormController implements Initializable {
 
     //
 
+    /**
+     * This method validates the input and saves the Customer to the database.
+     * @param event
+     * @throws IOException
+     */
     public void onSave(ActionEvent event) throws IOException {
         customerValidationReset(customerNameTextField,
                 customerAddressTextField,
@@ -134,6 +148,9 @@ public class ModifyCustomerFormController implements Initializable {
         }
     }
 
+    /**
+     * This method resets the ComboBoxes when the Country ComboBox is changed.
+     */
     public void onSelectCountry() {
         AddNewCustomerFormController.setDivisionComboBox(customerDivisionComboBox, divisionList, customerCountryComboBox);
     }

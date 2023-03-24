@@ -9,6 +9,19 @@ import java.time.LocalDateTime;
 
 public abstract class AppointmentImpl {
 
+    /**
+     * This method inserts an appointment into the database.
+     * @param title
+     * @param description
+     * @param location
+     * @param type
+     * @param start
+     * @param end
+     * @param customerId
+     * @param userId
+     * @param contactId
+     * @return
+     */
     public static int appointmentInsert(
             String title,
             String description,
@@ -44,6 +57,20 @@ public abstract class AppointmentImpl {
         }
     }
 
+    /**
+     * This method updates an appointment in the database.
+     * @param title
+     * @param description
+     * @param location
+     * @param type
+     * @param start
+     * @param end
+     * @param customerId
+     * @param userId
+     * @param contactId
+     * @param apptId
+     * @return
+     */
     public static int appointmentUpdate(String title,
                                         String description,
                                         String location,
@@ -80,6 +107,11 @@ public abstract class AppointmentImpl {
         }
     }
 
+    /**
+     * This method deletes an appointment from the database.
+     * @param apptId
+     * @return
+     */
     public static int appointmentDelete(int apptId) {
         String sql = "DELETE FROM appointments WHERE Appointment_ID = ?";
 
@@ -96,6 +128,9 @@ public abstract class AppointmentImpl {
         }
     }
 
+    /**
+     * This method selects all appointments from the database.
+     */
     public static void appointmentSelect() {
         String sql = "SELECT a.Appointment_ID, a.Title, a.Description, a.Location, c.Contact_Name, a.Type, a.Start, a.End, a.Customer_ID, a.User_ID\n" +
                 "FROM appointments AS a\n" +
@@ -126,6 +161,10 @@ public abstract class AppointmentImpl {
         }
     }
 
+    /**
+     * This method selects all appointments by contact from the database.
+     * @param contactId
+     */
     public static void appointmentSelectByContact(int contactId) {
         String sql = "SELECT a.Appointment_ID, a.Title, a.Description, a.Location, c.Contact_Name, a.Type, a.Start, a.End, a.Customer_ID, a.User_ID\n" +
                 "FROM appointments AS a\n" +

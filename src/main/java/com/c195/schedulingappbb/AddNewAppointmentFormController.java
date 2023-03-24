@@ -10,11 +10,9 @@ import javafx.scene.control.*;
 import model.Appointment;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.sql.Timestamp;
 import java.time.*;
-import java.time.format.DateTimeParseException;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -54,10 +52,20 @@ public class AddNewAppointmentFormController implements Initializable {
     public Label localBusinessHoursLabel;
     public TextField apptApptIdTextField;
 
+    /**
+     * This method loads the main form on cancel.
+     * @param event
+     * @throws IOException
+     */
     public void onCancel(ActionEvent event) throws IOException {
         loadForm(event, "MainForm.fxml");
     }
 
+    /**
+     * This method validates the appointment and saves it to the database.
+     * @param event
+     * @throws IOException
+     */
     public void onSave(ActionEvent event) throws IOException {
         apptValidationReset(apptTitleTextField,
                 apptDescriptionTextField,
@@ -236,7 +244,6 @@ public class AddNewAppointmentFormController implements Initializable {
             Timestamp endTimestamp = convertToTimestamp(date, convertToLocalTime(end));
             int customerId = customerIdFromNameSelect(customer);
             int contactId = contactIdFromNameSelect(contact);
-            //TODO: Get rid of hard-coded user id after doing login stuff
             int userId = LoginFormController.userList.get(0).getUserId();
 
             AppointmentImpl.appointmentInsert(title, description, location, type, startTimestamp, endTimestamp,
@@ -245,6 +252,11 @@ public class AddNewAppointmentFormController implements Initializable {
         }
     }
 
+    /**
+     * Validates that date picker is not null
+     * @param datePicker
+     * @return
+     */
     public static boolean datePickerValidation(DatePicker datePicker) {
         if (datePicker.getValue() == null) {
             datePicker.setStyle(warningHighlight);
@@ -254,6 +266,12 @@ public class AddNewAppointmentFormController implements Initializable {
         }
     }
 
+    /**
+     * Validates that the time string is in proper 00:00 format
+     * @param timeString
+     * @param textField
+     * @return
+     */
     public static boolean timeStringValidation(String timeString, TextField textField) {
         Pattern pattern = Pattern.compile("\\d\\d:\\d\\d");
         Matcher matcher = pattern.matcher(timeString);
@@ -272,7 +290,11 @@ public class AddNewAppointmentFormController implements Initializable {
         return match;
     }
 
-
+    /**
+     * Validates that string can be parsed to a LocalTime object
+     * @param timeString
+     * @return
+     */
     public static boolean checkTimeStringHoursMinutesValidation(String timeString) {
         try {
             LocalTime.parse(timeString);
@@ -282,36 +304,74 @@ public class AddNewAppointmentFormController implements Initializable {
         }
     }
 
+    /**
+     * Method converts a LocalDate and LocalTime to a Timestamp
+     * @param date
+     * @param localTime
+     * @return
+     */
     public static Timestamp convertToTimestamp(LocalDate date, LocalTime localTime) {
         LocalDateTime combined = convertToLocalDateTime(date, localTime);
         Timestamp timestamp = Timestamp.valueOf(combined);
         return timestamp;
     }
 
+    /**
+     * Method converts a String to a LocalTime object
+     * @param time
+     * @return
+     */
     public static LocalTime convertToLocalTime(String time) {
         return LocalTime.parse(time);
     }
 
+    /**
+     * Method converts a LocalDate and LocalTime to a LocalDateTime
+     * @param date
+     * @param time
+     * @return
+     */
     public static LocalDateTime convertToLocalDateTime(LocalDate date, LocalTime time) {
         return LocalDateTime.of(date, time);
     }
 
+    /**
+     * Method sets the ComboBox for the Contacts
+     * @param comboBox
+     * @param list
+     */
     public static void setContactsComboBox(ComboBox<String> comboBox, ObservableList<String> list) {
         list.clear();
         Query.contactSelect();
         comboBox.setItems(list);
     }
 
+    /**
+     * Method sets the ComboBox for the Customers
+     * @param comboBox
+     * @param list
+     */
     public static void setCustomersComboBox(ComboBox<String> comboBox, ObservableList<String> list) {
         list.clear();
         Query.customerSelect();
         comboBox.setItems(list);
     }
 
+    /**
+     * Method returns DayOfWeek object from a LocalDateTime object
+     * @param localDateTime
+     * @return
+     */
     public static DayOfWeek getDayOfTheWeek(LocalDateTime localDateTime) {
         return localDateTime.getDayOfWeek();
     }
 
+    /**
+     * Method validates that a date is not a weekend
+     * @param datePicker
+     * @param localDateTime
+     * @return
+     */
     public static boolean validateWeekend(DatePicker datePicker, LocalDateTime localDateTime) {
         DayOfWeek dayOfWeek = getDayOfTheWeek(localDateTime);
         if (dayOfWeek.getValue() == 6 || dayOfWeek.getValue() == 7) {
@@ -323,6 +383,12 @@ public class AddNewAppointmentFormController implements Initializable {
     }
 
 
+    /**
+     * Method validates that time is not outside of business hours
+     * @param textField
+     * @param localDateTime
+     * @return
+     */
     public static boolean validateOutsideBusinessHours(TextField textField, LocalDateTime localDateTime) {
         ZoneId estZoneId = ZoneId.of("America/New_York");
         LocalTime openingTime = LocalTime.of(8,0);
@@ -343,6 +409,12 @@ public class AddNewAppointmentFormController implements Initializable {
         }
     }
 
+    /**
+     * Method validates that the start time is before the end time
+     * @param start
+     * @param end
+     * @return
+     */
     public static boolean validateStartBeforeEnd(LocalDateTime start, LocalDateTime end) {
         if (start.isBefore(end)) {
             return true;
@@ -351,6 +423,15 @@ public class AddNewAppointmentFormController implements Initializable {
         }
     }
 
+    /**
+     * Method validates that the appointment does not overlap with another appointment
+     * @param start
+     * @param end
+     * @param customerId
+     * @param apptId
+     * @param modifyFlag
+     * @return
+     */
     public static boolean validateAppointmentOverlap(LocalDateTime start, LocalDateTime end, int customerId, TextField apptId, boolean modifyFlag) {
         boolean overlap = false;
         ObservableList<Appointment> appointments = Appointment.getAllAppointments();
@@ -368,6 +449,14 @@ public class AddNewAppointmentFormController implements Initializable {
         return overlap;
     }
 
+    /**
+     * Method for the logic of the validateAppointmentOverlap method
+     * @param start
+     * @param end
+     * @param overlap
+     * @param a
+     * @return
+     */
     private static boolean isOverlap(LocalDateTime start, LocalDateTime end, boolean overlap, Appointment a) {
         if ((start.isAfter(a.getStartDateTime()) || start.isEqual(a.getStartDateTime())) && start.isBefore(a.getEndDateTime())) {
             overlap = true;
@@ -379,6 +468,10 @@ public class AddNewAppointmentFormController implements Initializable {
         return overlap;
     }
 
+    /**
+     * Method sets a label that tells the user business hours in their local time zone
+     * @param label
+     */
     public static void setLocalBusinessHoursLabel(Label label) {
         ZoneId estZoneId = ZoneId.of("America/New_York");
         ZoneId localZoneId = getLocalZoneId();
@@ -407,6 +500,11 @@ public class AddNewAppointmentFormController implements Initializable {
 
     }
 
+    /**
+     * Method parses the hour to a string and adds a 0 if the hour is less than 10
+     * @param hour
+     * @return
+     */
     public static String parseHour(int hour) {
         if (hour < 10) {
             return "0" + hour;
@@ -415,6 +513,18 @@ public class AddNewAppointmentFormController implements Initializable {
         }
     }
 
+    /**
+     * Method resets the validation styles on the appointment form
+     * @param apptTitleTextField
+     * @param apptDescriptionTextField
+     * @param apptLocationTextField
+     * @param apptTypeTextField
+     * @param apptContactComboBox
+     * @param apptCustomerComboBox
+     * @param apptDateDatePicker
+     * @param apptStartTextField
+     * @param apptEndTextField
+     */
     public static void apptValidationReset(TextField apptTitleTextField,
                                            TextField apptDescriptionTextField,
                                            TextField apptLocationTextField,

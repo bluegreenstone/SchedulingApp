@@ -15,6 +15,16 @@ public class Customer {
 
     public static ObservableList<Customer> allCustomers = FXCollections.observableArrayList();
 
+    /**
+     * This is the constructor.
+     * @param customerId
+     * @param name
+     * @param address
+     * @param phoneNumber
+     * @param country
+     * @param levelOneDivision
+     * @param postalCode
+     */
     public Customer(int customerId, String name, String address, String phoneNumber, String country, String levelOneDivision, String postalCode) {
         this.customerId = customerId;
         this.name = name;
