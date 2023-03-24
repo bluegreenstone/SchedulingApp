@@ -13,7 +13,7 @@ JDK VERSION: 17.0.1
 JavaFX VERSION: 17.0.1
 
 DIRECTIONS TO RUN:
-    1. Unzip package and open in IntelliJ IDEA.
+    1. Unzip package, remove .idea directory and rebuild in IntelliJ IDEA.
     2. Add new configuration.
        - Select Main class: Main
        - Select VM options: --module-path ${PATH_TO_FX} --add-modules javafx.controls,javafx.fxml,javafx.graphics
