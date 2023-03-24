@@ -86,8 +86,8 @@ public class MainFormController implements Initializable {
             String content = "Deleting this customer will also delete all associated appointments.";
             if (confirmationAlert(title, header, content)) {
                 int customerId = selected.getCustomerId();
-                CustomerImpl.customerDelete(customerId);
                 CustomerImpl.customerAssocApptDelete(customerId);
+                CustomerImpl.customerDelete(customerId);
                 Appointment.allAppointments.remove(selected);
                 Customer.allCustomers.remove(selected);
                 loadForm(event, "MainForm.fxml");

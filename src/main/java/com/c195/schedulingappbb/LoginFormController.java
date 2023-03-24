@@ -47,8 +47,6 @@ public class LoginFormController implements Initializable {
     public void onLogin(ActionEvent event) throws IOException {
         if (validateUser(usernameTextField.getText(), passwordTextField.getText())) {
             writeLoginActivity(true, usernameTextField.getText(), passwordTextField.getText());
-            System.out.println(usernameTextField.getText());
-            System.out.println(passwordTextField.getText());
             loadForm(event, "MainForm.fxml");
             MainFormController.appointmentAlert(Appointment.allAppointments);
         } else {

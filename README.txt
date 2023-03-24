@@ -9,10 +9,17 @@ RELEASE DATE: 03/24/2023
 
 
 IDE VERSION: IntelliJ IDEA Community Edition 2021.1.3
-JDK VERSION: 11
-JavaFX VERSION: 11
+JDK VERSION: 17.0.1
+JavaFX VERSION: 17.0.1
 
 DIRECTIONS TO RUN:
+    1. Unzip package and open in IntelliJ IDEA.
+    2. Add new configuration.
+       - Select Main class: Main
+       - Select VM options: --module-path ${PATH_TO_FX} --add-modules javafx.controls,javafx.fxml,javafx.graphics
+    3. Add mysql-connector-java-8.0.25.jar to project.
+       - Select File > Project Structure > Libraries > Add > mysql-connector-java-8.0.25.jar
+    4. Run application.
 
 ADDITIONAL REPORT: My additional report lists all countries that have at least one customer in the database. It also
                    lists the number of customers in each country.
