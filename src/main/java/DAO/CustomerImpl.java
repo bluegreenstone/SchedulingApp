@@ -57,7 +57,7 @@ public abstract class CustomerImpl {
         }
     }
 
-    //TODO: Add delete appointment functionality when Appointments finished
+
     public static int customerDelete(int customerId) {
         String sql = "DELETE FROM customers WHERE Customer_ID = ?";
 
@@ -90,7 +90,7 @@ public abstract class CustomerImpl {
         }
     }
 
-    //TODO: Overload select to get data for reports, use WHERE with a setter to select ID
+
     public static void customerSelect() {
         String sql = "SELECT c.Customer_ID, c.Customer_Name, c.Address, c.Postal_Code, c.Phone, f.Division, c2.Country\n" +
                 "FROM customers AS c \n" +

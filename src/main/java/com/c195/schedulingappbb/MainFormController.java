@@ -18,6 +18,7 @@ import model.Customer;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.time.format.TextStyle;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -37,7 +38,6 @@ public class MainFormController implements Initializable {
     public TableColumn<Appointment, String> upcomingApptLocationCol;
     public TableColumn<Appointment, String> upcomingApptContactCol;
     public TableColumn<Appointment, String> upcomingApptTypeCol;
-    //TODO: Figure out TableColumn type after figuring out time
     public TableColumn<Appointment, String> upcomingApptStartCol;
     public TableColumn<Appointment, String> upcomingApptEndCol;
     public TableColumn<Appointment, Integer> upcomingApptCustomerIdCol;
@@ -47,6 +47,10 @@ public class MainFormController implements Initializable {
     public RadioButton viewAllRadioButton;
     public RadioButton monthRadioButton;
     public RadioButton weekRadioButton;
+    public RadioButton allContactsRadioButton;
+    public RadioButton customersCountryRadioButton;
+    public RadioButton customersMonthTypeRadioButton;
+    public Button generateButton;
 
     public void onLogout(ActionEvent event) throws IOException {
         loadForm(event, "LoginForm.fxml");
@@ -266,6 +270,101 @@ public class MainFormController implements Initializable {
                     filteredList);
         }
     }
+
+    public void onGenerate(ActionEvent event) throws IOException {
+        if (customersMonthTypeRadioButton.isSelected()) {
+            onCustomersMonthTypeRadioButton();
+        } else if (customersCountryRadioButton.isSelected()) {
+            onCustomersCountryRadioButton();
+        } else if (allContactsRadioButton.isSelected()) {
+            onAllContactsRadioButton(event);
+        }
+    }
+
+    public void onCustomersMonthTypeRadioButton() {
+        Appointment.allAppointments.clear();
+        AppointmentImpl.appointmentSelect();
+        ObservableList<Appointment> list = Appointment.getAllAppointments();
+        ObservableList<String> typeList = FXCollections.observableArrayList();
+        int monthApptTotal = 0;
+        int typeApptTotal = 0;
+
+
+        list.forEach(a -> {
+                    if (!typeList.contains(a.getType())) {
+                        typeList.add(a.getType());
+                    }
+                });
+
+        String output = "Customer Appointments By Month and Type\n\nBy Month:\n\n";
+        for (int i = 1; i <= 12; i++) {
+            int monthTotal = 0;
+            for (Appointment a : list) {
+                if (a.getStartDateTime().getMonthValue() == i) {
+                    monthTotal++;
+                    monthApptTotal++;
+                }
+            }
+            if (monthTotal > 0) {
+                output += Month.of(i).getDisplayName(TextStyle.FULL, Locale.getDefault()) + ": " + monthTotal + "\n";
+            }
+        }
+
+        output += "\n***Total: " + monthApptTotal + "\n\nBy Type:\n\n";
+
+        for (String s : typeList) {
+            int typeTotal = 0;
+            for (Appointment a : list) {
+                if (a.getType().equals(s)) {
+                    typeTotal++;
+                    typeApptTotal++;
+                }
+            }
+            output += s + ": " + typeTotal + "\n";
+        }
+
+        output += "\n***Total: " + typeApptTotal + "\n\n";
+
+        warningAlert("Customer Appointments by Month and Type", "Customer Appointments by Month and Type", output);
+    }
+
+
+    public void onAllContactsRadioButton(ActionEvent event) throws IOException {
+        loadForm(event, "ReportForm.fxml");
+    }
+
+    public void onCustomersCountryRadioButton() {
+        Customer.allCustomers.clear();
+        CustomerImpl.customerSelect();
+        ObservableList<Customer> list = Customer.getAllCustomers();
+        ObservableList<String> countryList = FXCollections.observableArrayList();
+        int countryTotal = 0;
+        String output = "Customers by Country\n\n";
+
+        list.forEach(c -> {
+                    if (!countryList.contains(c.getCountry())) {
+                        countryList.add(c.getCountry());
+                    }
+                });
+
+
+        for (String s : countryList) {
+            int countryCount = 0;
+            for (Customer c : list) {
+                if (c.getCountry().equals(s)) {
+                    countryCount++;
+                    countryTotal++;
+                }
+            }
+            output += s + ": " + countryCount + "\n";
+        }
+
+        output += "\n***Total Customers: " + countryTotal + "\n\n";
+
+        warningAlert("Customers by Country", "Customers by Country", output);
+    }
+
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

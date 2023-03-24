@@ -18,6 +18,7 @@ public class Appointment {
     private int userId;
 
     public static ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
+    public static ObservableList<Appointment> contactAppointments = FXCollections.observableArrayList();
 
     public Appointment(int appointmentId, String title, String description, String location, String contact, String type, LocalDateTime startDateTime, LocalDateTime endDateTime, int customerId, int userId) {
         this.appointmentId = appointmentId;
@@ -30,6 +31,10 @@ public class Appointment {
         this.endDateTime = endDateTime;
         this.customerId = customerId;
         this.userId = userId;
+    }
+
+    public static ObservableList<Appointment> getContactAppointments() {
+        return contactAppointments;
     }
 
     public int getAppointmentId() {

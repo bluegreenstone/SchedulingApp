@@ -252,7 +252,7 @@ public class ModifyAppointmentFormController implements Initializable {
             int customerId = customerIdFromNameSelect(customer);
             int contactId = contactIdFromNameSelect(contact);
             //TODO: Get rid of hard-coded user id after doing login stuff
-            int userId = 1;
+            int userId = LoginFormController.userList.get(0).getUserId();
 
             AppointmentImpl.appointmentUpdate(title, description, location, type, startTimestamp, endTimestamp,
                     customerId, userId, contactId, apptId);

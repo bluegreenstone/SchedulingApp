@@ -68,10 +68,13 @@
       <Button layoutX="312.0" layoutY="704.0" mnemonicParsing="false" onAction="#onAddNewCustomer" text="Add New Customer" />
       <Button layoutX="482.0" layoutY="704.0" mnemonicParsing="false" onAction="#onModifyCustomer" text="Modify Customer" />
       <Button layoutX="637.0" layoutY="703.0" mnemonicParsing="false" onAction="#onDeleteCustomer" text="Delete Customer" />
-      <RadioButton layoutX="821.0" layoutY="514.0" mnemonicParsing="false" text="All Appointments" />
-      <RadioButton layoutX="821.0" layoutY="541.0" mnemonicParsing="false" text="All Contact Details" />
-      <RadioButton layoutX="821.0" layoutY="569.0" mnemonicParsing="false" text="Some Other Report" />
-      <Button layoutX="820.0" layoutY="691.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="131.0" text="Generate" />
+      <RadioButton fx:id="customersMonthTypeRadioButton" layoutX="821.0" layoutY="514.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="141.0" text="Total Customers By Month And Type" wrapText="true">
+         <toggleGroup>
+            <ToggleGroup fx:id="reportToggleGroup" />
+         </toggleGroup></RadioButton>
+      <RadioButton fx:id="allContactsRadioButton" layoutX="822.0" layoutY="562.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="141.0" text="All Contact Schedules" toggleGroup="$reportToggleGroup" wrapText="true" />
+      <RadioButton fx:id="customersCountryRadioButton" layoutX="822.0" layoutY="618.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="141.0" text="Total Customers By Country" toggleGroup="$reportToggleGroup" wrapText="true" />
+      <Button fx:id="generateButton" layoutX="820.0" layoutY="691.0" mnemonicParsing="false" onAction="#onGenerate" prefHeight="26.0" prefWidth="131.0" text="Generate" />
       <Label layoutX="405.0" layoutY="7.0" text="Initech Desktop Scheduler">
          <font>
             <Font name="Arial Bold Italic" size="19.0" />

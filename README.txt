@@ -1,0 +1,19 @@
+APPLICATION TITLE: Initech Desktop Scheduler
+PURPOSE: To provide a desktop scheduler for the Initech Corporation.
+
+
+AUTHOR: Brendan Brown
+CONTACT INFORMATION: bbrend7@wgu.edu
+APPLICATION VERSION: 1.0
+RELEASE DATE: 03/24/2023
+
+
+IDE VERSION: IntelliJ IDEA Community Edition 2021.1.3
+JDK VERSION: 11
+JavaFX VERSION: 11
+
+DIRECTIONS TO RUN:
+
+ADDITIONAL REPORT: My additional
+
+MySQL CONNECTOR DRIVER VERSION: 8.0.32

@@ -175,7 +175,7 @@ public class AddNewAppointmentFormController implements Initializable {
             LocalDate localDate = apptDateDatePicker.getValue();
             LocalTime localTimeStart = null;
             LocalTime localTimeEnd = null;
-            //TODO: Add validation for time in ModifyAppointmentFormController
+
             if (checkTimeStringHoursMinutesValidation(start)) {
                 localTimeStart = convertToLocalTime(start);
             } else {
@@ -237,7 +237,7 @@ public class AddNewAppointmentFormController implements Initializable {
             int customerId = customerIdFromNameSelect(customer);
             int contactId = contactIdFromNameSelect(contact);
             //TODO: Get rid of hard-coded user id after doing login stuff
-            int userId = 1;
+            int userId = LoginFormController.userList.get(0).getUserId();
 
             AppointmentImpl.appointmentInsert(title, description, location, type, startTimestamp, endTimestamp,
                     customerId, userId, contactId);
@@ -272,7 +272,7 @@ public class AddNewAppointmentFormController implements Initializable {
         return match;
     }
 
-    //TODO: Update on ModifyAppointmentFormController
+
     public static boolean checkTimeStringHoursMinutesValidation(String timeString) {
         try {
             LocalTime.parse(timeString);
@@ -322,7 +322,7 @@ public class AddNewAppointmentFormController implements Initializable {
         }
     }
 
-    //TODO: add setStyle to modify appt and start/end variable
+
     public static boolean validateOutsideBusinessHours(TextField textField, LocalDateTime localDateTime) {
         ZoneId estZoneId = ZoneId.of("America/New_York");
         LocalTime openingTime = LocalTime.of(8,0);
@@ -445,5 +445,5 @@ public class AddNewAppointmentFormController implements Initializable {
 
     }
 
-//    TODO: Create appt. overlap validation method.
+
 }
